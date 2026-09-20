@@ -1,0 +1,106 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Resumes - ResumeLab AI</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-logo">
+        <div class="brand-icon">⚡</div>
+        <span>ResumeLab</span>
+      </div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item"><a href="/dashboard.html"><span>📊</span> Dashboard</a></li>
+      <li class="nav-item"><a href="/upload.html"><span>📤</span> Upload Resume</a></li>
+      <li class="nav-item"><a href="/ats.html"><span>🎯</span> ATS Check</a></li>
+      <li class="nav-item active"><a href="/resumes.html"><span>📁</span> My Resumes</a></li>
+      <li class="nav-item"><a href="/chat.html"><span>🤖</span> AI Assistant</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-profile-badge">
+        <div class="user-avatar" id="sidebar-user-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-user-name">Loading...</div>
+          <div class="user-email" id="sidebar-user-email">user@email.com</div>
+        </div>
+      </div>
+      <button onclick="logout()" class="btn btn-outline btn-block btn-sm" style="color: var(--danger); border-color: rgba(239,68,68,0.3);">
+        🚪 Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Manage Resumes</h1>
+        <p class="page-subtitle">View, download, inspect structured data, or run ATS comparisons on all your uploaded resumes.</p>
+      </div>
+      <a href="/upload.html" class="btn btn-primary">
+        <span>+</span> Upload New Resume
+      </a>
+    </div>
+
+    <div class="card">
+      <!-- EMPTY STATE -->
+      <div id="resumes-empty-state" style="display: none; text-align: center; padding: 3rem 1.5rem;">
+        <div style="font-size: 3rem; margin-bottom: 1rem;">📁</div>
+        <h3 style="font-size: 1.25rem; margin-bottom: 0.5rem;">No Resumes Found</h3>
+        <p style="color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1.5rem;">
+          You haven't uploaded any resumes yet. Upload your PDF resume to start analyzing.
+        </p>
+        <a href="/upload.html" class="btn btn-primary">Upload Resume</a>
+      </div>
+
+      <!-- RESUMES TABLE -->
+      <div class="table-container">
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>File & Candidate</th>
+              <th>Uploaded Date</th>
+              <th>Profile Score</th>
+              <th>Skills Count</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="resumes-table-body">
+            <!-- populated via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- DETAIL MODAL -->
+    <div class="modal-overlay" id="resume-detail-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 id="modal-resume-title" style="font-size: 1.25rem; font-weight: 700; color: #fff;">Resume Details</h3>
+          <button id="modal-close-btn" class="btn btn-secondary btn-sm" style="font-size: 1.1rem; line-height: 1;">✕</button>
+        </div>
+        <div id="modal-resume-body">
+          <!-- populated via JS -->
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="/static/auth.js"></script>
+<script src="/static/resumes.js"></script>
+</body>
+</html>

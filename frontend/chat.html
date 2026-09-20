@@ -1,0 +1,104 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Career Assistant - ResumeLab AI</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-logo">
+        <div class="brand-icon">⚡</div>
+        <span>ResumeLab</span>
+      </div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item"><a href="/dashboard.html"><span>📊</span> Dashboard</a></li>
+      <li class="nav-item"><a href="/upload.html"><span>📤</span> Upload Resume</a></li>
+      <li class="nav-item"><a href="/ats.html"><span>🎯</span> ATS Check</a></li>
+      <li class="nav-item"><a href="/resumes.html"><span>📁</span> My Resumes</a></li>
+      <li class="nav-item active"><a href="/chat.html"><span>🤖</span> AI Assistant</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-profile-badge">
+        <div class="user-avatar" id="sidebar-user-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-user-name">Loading...</div>
+          <div class="user-email" id="sidebar-user-email">user@email.com</div>
+        </div>
+      </div>
+      <button onclick="logout()" class="btn btn-outline btn-block btn-sm" style="color: var(--danger); border-color: rgba(239,68,68,0.3);">
+        🚪 Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="page-header" style="margin-bottom: 1rem;">
+      <div>
+        <h1 class="page-title">AI Career & Resume Assistant</h1>
+        <p class="page-subtitle">Get personalized guidance, rewrite bullet points with the STAR framework, optimize for ATS, and prep for interviews.</p>
+      </div>
+      <div style="display: flex; gap: 0.5rem; align-items: center;">
+        <select id="chat-resume-select" class="form-select" style="max-width: 320px; font-size: 0.85rem; padding: 0.5rem 0.75rem;">
+          <option value="">Loading resume context...</option>
+        </select>
+        <button id="btn-clear-chat" class="btn btn-secondary btn-sm" title="Clear conversation history">
+          🧹 Clear
+        </button>
+      </div>
+    </div>
+
+    <!-- QUICK PROMPTS -->
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem;">
+      <button class="btn btn-secondary btn-sm btn-quick-prompt" data-prompt="Rewrite my recent work experience bullet points using the STAR method with high-impact action verbs and metrics.">
+        ⭐ Rewrite in STAR Format
+      </button>
+      <button class="btn btn-secondary btn-sm btn-quick-prompt" data-prompt="Based on my skills, what are the top 3 high-demand technologies or cloud tools I should learn next?">
+        🚀 Upskilling Roadmap
+      </button>
+      <button class="btn btn-secondary btn-sm btn-quick-prompt" data-prompt="Give me 4 challenging behavioral and technical interview questions tailored specifically to my background.">
+        💼 Mock Interview Questions
+      </button>
+      <button class="btn btn-secondary btn-sm btn-quick-prompt" data-prompt="How can I optimize my professional summary to get maximum visibility from ATS scanners and recruiters?">
+        🎯 ATS Summary Optimization
+      </button>
+    </div>
+
+    <!-- CHAT CONTAINER -->
+    <div class="chat-wrapper">
+      <div class="chat-messages" id="chat-messages">
+        <div class="chat-bubble assistant">
+          <div class="chat-avatar">AI</div>
+          <div class="chat-text">
+            <p>Hello! I am your <strong>ResumeLab AI Career Coach</strong>.</p>
+            <p style="margin-top: 0.4rem;">I have full contextual visibility of your uploaded resume. Ask me anything about rewriting bullet points, tailoring your resume for job openings, preparing for technical interviews, or salary negotiation!</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="chat-input-bar">
+        <input type="text" id="chat-input" class="form-input" placeholder="Type your career or resume question here (e.g., 'Rewrite my first job bullet in STAR format')..." autocomplete="off">
+        <button id="btn-send-chat" class="btn btn-primary" style="padding: 0 1.5rem;">
+          Send ➔
+        </button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<script src="/static/auth.js"></script>
+<script src="/static/chat.js"></script>
+</body>
+</html>

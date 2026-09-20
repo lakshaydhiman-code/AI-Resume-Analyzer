@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upload Resume - ResumeLab AI</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<div class="app-container">
+  <!-- SIDEBAR NAVIGATION -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="brand-logo">
+        <div class="brand-icon">⚡</div>
+        <span>ResumeLab</span>
+      </div>
+    </div>
+
+    <ul class="nav-list">
+      <li class="nav-item"><a href="/dashboard.html"><span>📊</span> Dashboard</a></li>
+      <li class="nav-item active"><a href="/upload.html"><span>📤</span> Upload Resume</a></li>
+      <li class="nav-item"><a href="/ats.html"><span>🎯</span> ATS Check</a></li>
+      <li class="nav-item"><a href="/resumes.html"><span>📁</span> My Resumes</a></li>
+      <li class="nav-item"><a href="/chat.html"><span>🤖</span> AI Assistant</a></li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <div class="user-profile-badge">
+        <div class="user-avatar" id="sidebar-user-avatar">U</div>
+        <div class="user-info">
+          <div class="user-name" id="sidebar-user-name">Loading...</div>
+          <div class="user-email" id="sidebar-user-email">user@email.com</div>
+        </div>
+      </div>
+      <button onclick="logout()" class="btn btn-outline btn-block btn-sm" style="color: var(--danger); border-color: rgba(239,68,68,0.3);">
+        🚪 Logout
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="page-header">
+      <div>
+        <h1 class="page-title">Upload & Parse Resume</h1>
+        <p class="page-subtitle">Upload your PDF resume. Our pipeline extracts text with PyMuPDF, applies OCR for scanned pages, and structures fields with AI.</p>
+      </div>
+    </div>
+
+    <!-- UPLOAD ZONE CARD -->
+    <div class="card" style="margin-bottom: 2rem;">
+      <form id="upload-form">
+        <div class="upload-dropzone" id="upload-dropzone">
+          <div class="upload-icon">📄</div>
+          <div class="upload-title">Drag & Drop your Resume PDF here</div>
+          <div class="upload-subtitle">Supports normal text PDFs and scanned image PDFs (Max 15MB)</div>
+          <button type="button" class="btn btn-outline btn-sm" onclick="document.getElementById('file-input').click()">
+            Browse Files
+          </button>
+          <input type="file" id="file-input" accept="application/pdf" style="display: none;">
+        </div>
+
+        <!-- SELECTED FILE INFO -->
+        <div id="file-info-card" style="display: none; align-items: center; justify-content: space-between; background: var(--bg-input); padding: 1rem 1.5rem; border-radius: var(--radius-sm); margin-top: 1.25rem; border: 1px solid var(--border-color);">
+          <div style="display: flex; align-items: center; gap: 0.75rem;">
+            <span style="font-size: 1.5rem;">📄</span>
+            <div>
+              <div id="selected-file-name" style="font-weight: 600; color: #fff;">resume.pdf</div>
+              <div id="selected-file-size" style="font-size: 0.8rem; color: var(--text-dim);">0.00 MB</div>
+            </div>
+          </div>
+          <button type="submit" id="btn-upload-submit" class="btn btn-primary">
+            🚀 Process & Analyze
+          </button>
+        </div>
+      </form>
+
+      <!-- PROGRESS INDICATOR -->
+      <div id="upload-progress-card" style="display: none; margin-top: 1.5rem; padding: 1.5rem; background: var(--bg-input); border-radius: var(--radius-sm); text-align: center; border: 1px solid var(--border-color);">
+        <div style="display: inline-block; width: 36px; height: 36px; border: 3px solid rgba(99,102,241,0.2); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 0.75rem;"></div>
+        <div id="upload-status-step" style="font-weight: 600; color: #fff; font-size: 1rem;">Reading document text...</div>
+        <div style="font-size: 0.85rem; color: var(--text-dim); margin-top: 0.25rem;">Please hold on while we extract text, execute OCR if needed, and parse fields.</div>
+      </div>
+    </div>
+
+    <!-- STRUCTURED PARSED RESULTS -->
+    <div id="upload-result-card" style="display: none;">
+      <div class="card" style="margin-bottom: 2rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+          <h2 style="font-size: 1.4rem; font-weight: 800;">Parsed Resume Analysis</h2>
+          <div style="display: flex; gap: 0.75rem;">
+            <a id="btn-goto-ats" href="/ats.html" class="btn btn-primary btn-sm">🎯 Test Against Job Description (ATS)</a>
+            <a id="btn-goto-chat" href="/chat.html" class="btn btn-secondary btn-sm">🤖 Ask AI Career Coach</a>
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 180px; gap: 2rem; align-items: center; margin-bottom: 2rem;">
+          <div>
+            <h3 id="res-name" style="font-size: 1.75rem; font-weight: 800; color: #fff; margin-bottom: 0.25rem;">Candidate Name</h3>
+            <div style="display: flex; gap: 1.5rem; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 1rem;">
+              <span id="res-email">📧 email@domain.com</span>
+              <span id="res-phone">📱 phone number</span>
+            </div>
+            <div style="background: rgba(255,255,255,0.02); padding: 1rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color);">
+              <div style="font-size: 0.8rem; font-weight: 600; color: var(--text-muted); margin-bottom: 0.25rem; text-transform: uppercase;">Professional Summary</div>
+              <p id="res-summary" style="font-size: 0.95rem; color: var(--text-main); line-height: 1.6;">
+                Summary text...
+              </p>
+            </div>
+          </div>
+
+          <div class="score-circle-container">
+            <div class="score-circle" id="result-score-gauge" style="--score: 0; --score-color: #10b981;">
+              <div class="score-inner">
+                <div class="score-number" id="result-score-num">0</div>
+                <div class="score-text">Score</div>
+              </div>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem; text-align: center;">Profile Strength</div>
+          </div>
+        </div>
+
+        <!-- SKILLS -->
+        <div style="margin-bottom: 2rem;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;">Skills & Competencies</h3>
+          <div id="res-skills" class="tag-container">
+            <!-- skills populated via JS -->
+          </div>
+        </div>
+
+        <!-- EXPERIENCE -->
+        <div style="margin-bottom: 2rem;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;">Work Experience</h3>
+          <div id="res-experience">
+            <!-- experience populated via JS -->
+          </div>
+        </div>
+
+        <!-- EDUCATION -->
+        <div style="margin-bottom: 2rem;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;">Education</h3>
+          <div id="res-education">
+            <!-- education populated via JS -->
+          </div>
+        </div>
+
+        <!-- PROJECTS -->
+        <div style="margin-bottom: 2rem;">
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;">Key Projects</h3>
+          <div id="res-projects">
+            <!-- projects populated via JS -->
+          </div>
+        </div>
+
+        <!-- CERTIFICATIONS -->
+        <div>
+          <h3 style="font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem;">Certifications & Credentials</h3>
+          <div id="res-certifications" class="tag-container">
+            <!-- certs populated via JS -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<style>
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+</style>
+
+<script src="/static/auth.js"></script>
+<script src="/static/upload.js"></script>
+</body>
+</html>
